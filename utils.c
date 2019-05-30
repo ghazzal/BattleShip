@@ -160,7 +160,7 @@ void new_game(game* g, player* pl1, player* pl2, int board_x, int board_y){
 }
 
 
-void print_game(game* g){
+void print_game(game* g, player* pl){
 	int i, j;
 	printf("Player number one boards:\n");
 	printf("Shipped board:\n");
@@ -168,7 +168,7 @@ void print_game(game* g){
 		for ( i = 0 ; i < g->board_y ; i++){
 			coordinate* tmp;
 //			printf("inja %p\n", g->players[0]->shgb);
-			get_coordinate_shbg(i, j, &tmp, g->players[0]->shgb);
+			get_coordinate_shbg(i, j, &tmp, pl->shgb);
 			printf("%c ", tmp->character);
 		}
 		printf("\n");
@@ -177,7 +177,7 @@ void print_game(game* g){
 	for(j = 0 ; j < g->board_x ; j++){
 		for ( i = 0 ; i < g->board_y ; i++){
 			coordinate* tmp;
-			get_coordinate_fgb(i, j, &tmp, g->players[0]->fgb);
+			get_coordinate_fgb(i, j, &tmp, pl->fgb);
 			printf("%c ", tmp->character);
 		}
 		printf("\n");

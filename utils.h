@@ -53,7 +53,7 @@ struct game{
 	void (* new_fgameboard)(fgameboard*, int, int, coordinate**);
 	void (* new_coordinate)(int, int, char);
 	void (* attack)(int ,int, player*, player**);
-	void ( * print_game)(struct game*);
+	void ( * print_game)(struct game*, player*);
 }typedef game;
 
 
@@ -72,7 +72,7 @@ void new_coordinate(coordinate* crd, int, int, char);
 
 void new_game(game *, player*, player*, int, int);
 
-void print_game(game* g);
+void print_game(game* g, player*);
 
 
 #define UTILS_H

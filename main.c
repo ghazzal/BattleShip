@@ -23,17 +23,17 @@ int main(){
 //    coordinate *fcrds_1 = (coordinate*)malloc(sizeof(coordinate)*BOARD_WIDTH*BOARD_HEIGHT);
 	coordinate *shcrdsp_1[100];
     coordinate *fcrdsp_1[100];
-    coordinate shcrds_1[100];
     coordinate shcrds_2[100];
+    coordinate shcrds_1[100];
     coordinate fcrds_1[100];
     coordinate fcrds_2[100];
 	shgameboard shgb_1;
-	printf("In aval %p %p\n", &shgb_1, &shcrds_1[0]);
     fgameboard fgb_1;
-    char name_1[20];
-    
+	shgameboard shgb_2;
+    fgameboard fgb_2;
     coordinate *shcrdsp_2[100];
     coordinate *fcrdsp_2[100];
+    char name_1[20];
     char name_2[20];
 	for(i = 0 ; i < 100 ; i ++ ){
 		shcrdsp_1[i] = &shcrds_1[i];
@@ -49,7 +49,8 @@ int main(){
     scanf("%s", name_2);
     printf("Done\n");
     g.new_player(name_1, &pl1, &g, &fcrdsp_1, &shcrdsp_1, &shgb_1, &fgb_1);
-    g.print_game(&g);
+    g.new_player(name_2, &pl2, &g, &fcrdsp_2, &shcrdsp_2, &shgb_2, &fgb_2);
+    g.print_game(&g, &pl2);
 }
 
 
