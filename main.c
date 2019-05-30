@@ -6,6 +6,6 @@
 int main(){
     game g;
     player pl;
-    g.new_player = &add_player;
-	g.new_player(&pl, "salam");
+//    g.new_player = &new_player;
+//	g.new_player(&pl, "salam");
 }
