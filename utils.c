@@ -3,6 +3,7 @@
 #include <stdlib.h> 
 #include "utils.h"
 
+
 void set_char_for_coordinate(int x, int y, char new_char, coordinate** crds, int crds_length){
 	int i;
 	for(i = 0 ; i < crds_length ; i++ ){

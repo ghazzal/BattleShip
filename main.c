@@ -5,6 +5,7 @@
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
 
+
 void get_ships(player* pl){
     int i;
     for(i = 0 ; i < SHIP_NUMBERS ; i++){

@@ -7,6 +7,7 @@
 #define UNKNOWN_SPACE '?'
 #define ATTACKED_SHIP_SPACE '*'
 
+
 struct {
 	int x;
 	int y;
