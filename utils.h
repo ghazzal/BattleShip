@@ -1,9 +1,9 @@
 #include <strings.h>
 #ifndef UTILS_H
 
-
+#define SHIP_NUMBERS 2
 #define SHIP_SPACE '#'
-#define FREE_SPACE ' '
+#define FREE_SPACE '_'
 #define UNKNOWN_SPACE '?'
 #define ATTACKED_SHIP_SPACE '*'
 
@@ -39,9 +39,9 @@ struct {
 struct {
 	fgameboard* fgb;
 	shgameboard* shgb;
-	char* name;
+	char name[20];
 	
-	void (* add_ship)(char, int, int, char*, shgameboard*, ship* shp, shgameboard*, fgameboard*);
+	void (* add_ship)(char, int, int, char*, shgameboard*, ship* shp);
 }typedef player;
 
 struct game{
@@ -51,7 +51,7 @@ struct game{
 	void (* new_player)(char*, player*, struct game*, coordinate**, coordinate**, shgameboard*, fgameboard*);
 	void (* new_shgameboard)(shgameboard*, int, int, coordinate**);
 	void (* new_fgameboard)(fgameboard*, int, int, coordinate**);
-	void (* new_coordinate)(int, int, char);
+	void (* new_coordinate)(coordinate*, int, int, char);
 	void (* attack)(int ,int, player*, player**);
 	void ( * print_game)(struct game*, player*);
 }typedef game;

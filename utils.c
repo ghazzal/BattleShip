@@ -15,6 +15,7 @@ void set_char_for_coordinate(int x, int y, char new_char, coordinate** crds, int
 
 void get_coordinate_shbg(int x, int y, coordinate** crd, shgameboard* board){
 	int i;
+     //   printf("Here %d\n", board->crds_length);
 	for ( i = 0 ; i < board->crds_length ; i++){
 //		printf("Nis %d ? %d %p\n", board->crds_length, i, board->crds[i]);
 		if ( x == board->crds[i]->x && y == board->crds[i]->y){
@@ -59,23 +60,32 @@ void add_ship(char type, int x, int y, char* direction, shgameboard* board, ship
 	sp->is_alive = 1;
 	sp->type = type;
 	sp->crds_length = type - 'A' + 1;
+//        printf("Creating new ship with address %p.\n", sp);
+        board->ships[board->ships_length++] = sp;
 }
 
 void attack(int x, int y, player* attacker, player** players){
 	player* defenser;
-	if(attacker == players[0])
+	if(attacker == players[0]){
 		defenser = players[1];
-	else
+//                printf("Player one is defenser\n");
+        }
+	else{
 		defenser = players[0];
+//                printf("Player zero is defenser\n");
+        }
 	int i = 0 ; 
 	int flag = 1;
 	ship* shp;
+//        printf("Looking for ships coordinates with length: %d\n", defenser->shgb->ships_length);
 	for (i = 0 ; i < defenser->shgb->ships_length && flag ; i++ ){
 		int j = 0 ; 
 		shp = defenser->shgb->ships[i];
+  //              printf("Ship number %d with address %p fetched with length %d.\n", i, shp, shp->crds_length);
 		for (j = 0 ; j < shp->crds_length ; j++){
 			coordinate* crd = shp->crds[j];
-			if ( x == crd->x && x == crd->y)
+//                        printf("Coordinate number %d fetched. x: %d y: %d\n", j, crd->x, crd->y);
+			if ( x == crd->x && y == crd->y)
 			{
 				crd->character = ATTACKED_SHIP_SPACE;
 				get_coordinate_fgb(x, y, &crd, attacker->fgb);
@@ -85,11 +95,17 @@ void attack(int x, int y, player* attacker, player** players){
 			}
 		}
 	}
+        if(flag){
+            coordinate* crd;
+            get_coordinate_fgb(x, y, &crd, attacker->fgb);
+            crd->character = FREE_SPACE;
+        } 
 	if(!flag){
 		for(i = 0 ; i < shp->crds_length ; i++){
 			if(shp->crds[i]->character == SHIP_SPACE)
 				return;
 		}
+                printf("A ship with length %d was destroyed.\n", shp->crds_length);
 		shp->is_alive = 0;
 	}
 }
@@ -97,7 +113,7 @@ void attack(int x, int y, player* attacker, player** players){
 
 void new_player(char* name, player* pl, game* g, coordinate** fcrds, coordinate** shcrds, shgameboard* shgb, fgameboard* fgb){
 	printf("Creating player %s\n", name);
-	pl->name = name;
+	strcpy(name, pl->name);
 	strcpy(pl->name, name);
 	g->new_shgameboard(shgb, g->board_x, g->board_y, shcrds);
 	g->new_fgameboard(fgb, g->board_x, g->board_y, fcrds);
@@ -123,6 +139,7 @@ void new_shgameboard(shgameboard* shgb, int board_x, int board_y, coordinate** c
 		}
 	}
 	shgb->set_char_for_coordinate = &set_char_for_coordinate;
+        shgb->ships_length = 0;
 }
 void new_fgameboard(fgameboard* fgb, int board_x, int board_y, coordinate** crds){
 	int i, j;
@@ -140,7 +157,7 @@ void new_fgameboard(fgameboard* fgb, int board_x, int board_y, coordinate** crds
 }
 
 void new_coordinate(coordinate* crd, int x, int y, char ch){
-	printf("%d %d %c\n", x, y, ch);
+	//printf("%d %d %c\n", x, y, ch);
 	crd->x = x;
 	crd->y = y;
 	crd->character = ch;
@@ -162,12 +179,12 @@ void new_game(game* g, player* pl1, player* pl2, int board_x, int board_y){
 
 void print_game(game* g, player* pl){
 	int i, j;
-	printf("Player number one boards:\n");
-	printf("Shipped board:\n");
+	printf("Boards:\n");
+	printf("Shipped board: %d %d\n", g->board_x, g->board_y);
 	for(j = 0 ; j < g->board_x ; j++){
 		for ( i = 0 ; i < g->board_y ; i++){
 			coordinate* tmp;
-//			printf("inja %p\n", g->players[0]->shgb);
+//			printf("inja %i %d\n", i, j);
 			get_coordinate_shbg(i, j, &tmp, pl->shgb);
 			printf("%c ", tmp->character);
 		}
