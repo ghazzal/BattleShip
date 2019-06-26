@@ -5,12 +5,26 @@
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
 
+    
+FILE* fdw;
+FILE* fdr;
 
+int loaded_game = 1;
+    
 void get_ships(player* pl){
     int i;
     for(i = 0 ; i < SHIP_NUMBERS ; i++){
         char line[100];
-        scanf("%99[^\n]%*c", line);
+//        int p = fscanf(fd, "%99[^\n]%*c", line);
+//        printf("innn: %d\n", p);
+        if(!(loaded_game && fscanf(fdr, "%99[^\n]%*c", line) == 1)){
+        	printf("inja oomad\n");
+			loaded_game = 0;
+			scanf("%99[^\n]%*c", line);
+			int op = fprintf(fdw, "%s\n", line);
+//			fprintf(fd, "salam\n");
+        	printf("kkkkkk: %d %s\n", op, line);
+		}
         char type, *dir;
         int x, y;
        // printf("%s\n", line);
@@ -37,12 +51,22 @@ void do_main_loop(game* g){
         printf("Player number %d turn.\n", turn);
         printf("Get your target point:\n");
         int x, y;
-        scanf("%d %d", &x, &y);
+		
+		if(!(loaded_game && fscanf(fdr, "%d %d", x, y) == 1)){
+        	loaded_game = 0;
+			scanf("%d %d", &x, &y);
+			fprintf(fdw, "%d %d\n", x, y);
+        }
+        
+//		scanf("%d %d", &x, &y);
         printf("Ok %d %d\n", x, y);
         g->attack(x, y, g->players[turn], g->players);
         g->print_game(g, g->players[turn]);
         turn = 1 - turn;
     }
+    fclose(fdw);
+    fclose(fdr);
+    fclose(fopen("save.txt", "w"));
     printf("Player number %d win the game.\n", turn);
 }
 
@@ -51,19 +75,9 @@ void do_main_loop(game* g){
 int main(){
 	int i;
     game g;
-//    shgameboard* sh = (shgameboard*)malloc(sizeof(shgameboard));
-//    sh->crds = (coordinate**)malloc(sizeof(coordinate*));
-//    sh->crds[0] = (coordinate*)malloc(sizeof(coordinate));
-//    printf("sss");
-//    coordinate** cpp = (coordinate**)malloc(sizeof(coordinate*));
-//    cpp[0] = (coordinate*)malloc(sizeof(coordinate)*100);
-//    sh.crds= cpp;
 	player pl1, pl2;
-//    printf("Hm?\n");
     new_game(&g, &pl1, &pl2, BOARD_WIDTH, BOARD_HEIGHT);
     
-//	coordinate *shcrds_1 = (coordinate*)malloc(sizeof(coordinate)*BOARD_WIDTH*BOARD_HEIGHT);
-//    coordinate *fcrds_1 = (coordinate*)malloc(sizeof(coordinate)*BOARD_WIDTH*BOARD_HEIGHT);
 	coordinate *shcrdsp_1[100];
     coordinate *fcrdsp_1[100];
     coordinate shcrds_2[100];
@@ -97,25 +111,26 @@ A @ (3,3) Left
 C @ (0,0) Left
 A @ (7,7) Right    
 */
+//	fdw = fopen("./save.txt", "w+");
+//	fdr = fopen("./save.txt", "r+");
     printf("In aval %p\n", &shcrds_2);
     printf("Get player 1 name:\n");
 //    scanf("%s", name_1);
 //    scanf("%s", name_2);
     printf("Done\n");
-    g.new_player(name_1, &pl1, &g, &fcrdsp_1, &shcrdsp_1, &shgb_1, &fgb_1);
-    g.new_player(name_2, &pl2, &g, &fcrdsp_2, &shcrdsp_2, &shgb_2, &fgb_2);
-    get_ships(&pl1);
-    get_ships(&pl2);
-    do_main_loop(&g);
-//    g.print_game(&g, &pl1);
-//    char line[100];
-//    for ( i = 0 ; i < SHIP_NUMBERS; i++){
-//        scanf("%99[^\n]%*c", line);
-//
-//        printf("%s\n", line);
-//    }
+    g.new_player(name_1, &pl1, &g, fcrdsp_1, shcrdsp_1, &shgb_1, &fgb_1);
+    g.new_player(name_2, &pl2, &g, fcrdsp_2, shcrdsp_2, &shgb_2, &fgb_2);
+    
 
-//    g.print_game(&g, &pl2);
+    
+    get_ships(&pl1);
+    printf("Getting new ships\n");
+    get_ships(&pl2);
+    FILE* fd;
+	fd = fopen("D:\SUT\C++\battleship\save2.txt", "w+");
+    fprintf(fd, "beneviisss\n");
+    fclose(fd);
+    do_main_loop(&g);
 }
 
 
